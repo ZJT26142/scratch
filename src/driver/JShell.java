@@ -29,7 +29,6 @@ package driver;// **********************************************************
 // *********************************************************
 
 import commands.*;
-import java.io.IOException;
 import java.util.*;
 import others.*;
 
@@ -40,16 +39,13 @@ public class JShell {
     // init current Session
     Session s = new Session(new Directory(System.getProperty("user.home")));
     do {
+      s.setStatus(0); //reset session status
       // prompt, get input
       String input;
       Scanner sc = new Scanner(System.in);
       System.out.print("$"+s.getWorkingDir().getPath() +">");
       input = sc.nextLine();
       System.out.println("Scanned: " + input);
-      if (input.equals("exit")) {
-        break;
-      }
-
       // parse the input into command, parameter(s)
       String[] parsed = input.split(" ", 2);
 
@@ -70,7 +66,7 @@ public class JShell {
       if(s.getStatus()==0){
         System.out.println("Command not found, Or Error found in parameters.");
       }
-    } while(true);
+    } while(s.getStatus()!=-1);
 
   }
 

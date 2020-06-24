@@ -2,7 +2,7 @@ package others;
 
 public class Session {
   Directory workingDir;
-  int status=0;
+  int status=0; //status code: -1 exit; 0 default; 1 success
   public Session(Directory dir){
     workingDir = dir;
   }

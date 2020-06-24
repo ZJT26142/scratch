@@ -1,5 +1,4 @@
 package commands;
-import java.io.IOException;
 import others.*;
 
 public class Command {
@@ -19,8 +18,12 @@ public class Command {
 
   }
   public Session executeCommand(){
-    // execute command based on its name, return 0 if command name is invalid, return 1 if command exists
+    // execute command based on its name, return session after execution
     switch(this.name){
+      case "exit":
+        System.out.println("Command exit detected.");
+        s = exit.exit(s);
+        return s;
       case "cd":
         System.out.println("command cd detected.");
         // execute command
@@ -31,7 +34,11 @@ public class Command {
         // execute command
         s = ls.listContent(parameter, s);
         return s;
-
+      case "mkdir":
+        System.out.println("Command mkdir detected");
+        // execute command
+        s = mkdir.mkdir(parameter, s);
+        return s;
     }
     return s;
   }

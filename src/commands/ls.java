@@ -20,7 +20,6 @@ public class ls extends Command {
     }
     // error
     else{
-      s.setStatus(0);
       return s;
     }
     // print result

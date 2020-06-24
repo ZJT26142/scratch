@@ -1,7 +1,5 @@
 package commands;
 
-import java.io.File;
-import java.nio.file.Path;
 import others.Directory;
 import others.Session;
 
@@ -9,17 +7,17 @@ public class cd extends Command{
   public static Session changeDirectory(String parameter, Session s){
     // need validate normalize parameter
     Directory workingDir = s.getWorkingDir();
+    //temp validate
+    if (parameter.equals("")) return s;
     Directory targetDir = new Directory(parameter);
-    // absolute dir
-    if (targetDir.getPath().isAbsolute()){
-      s.updateWorkingDir(targetDir);
-    }
-    // none absolute, concatenate with workingDir
-    else{
-      s.updateWorkingDir(workingDir.add(targetDir));
-    }
-    s.setStatus(1);
 
+    if (!targetDir.isAbsolute()){
+      targetDir = workingDir.add(targetDir);
+    }
+    if(targetDir.toFile().isDirectory()){
+      s.updateWorkingDir(targetDir);
+      s.setStatus(1);
+    }
     return s;
   }
 }

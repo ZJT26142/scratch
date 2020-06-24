@@ -27,7 +27,10 @@ public class Directory {
   }
 
   public boolean exists(){
-    return this.dir.exists();
+    return toFile().exists();
+  }
+  public boolean isAbsolute(){
+    return path.isAbsolute();
   }
 
   public File toFile(){
