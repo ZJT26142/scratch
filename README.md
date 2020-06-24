@@ -1,0 +1,2 @@
+# scratch
+Java project scratch
