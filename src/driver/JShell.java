@@ -38,12 +38,12 @@ public class JShell {
 
   public static void main(String[] args){
     // init current Session
-    Session s = new Session(new Directory(System.getProperty("user.dir")));
+    Session s = new Session(new Directory(System.getProperty("user.home")));
     do {
       // prompt, get input
       String input;
       Scanner sc = new Scanner(System.in);
-      System.out.print("$"+s.getWorkingDir().getDirectory()+">");
+      System.out.print("$"+s.getWorkingDir().getPath() +">");
       input = sc.nextLine();
       System.out.println("Scanned: " + input);
       if (input.equals("exit")) {

@@ -1,6 +1,6 @@
 package commands;
 
-import java.io.IOException;
+
 import others.Directory;
 import others.Session;
 import java.io.File;
@@ -10,21 +10,24 @@ public class ls extends Command {
     Directory workingDir = s.getWorkingDir();
     Directory targetDir = new Directory(parameter);
     String[] result;
-    if (parameter.equals("")||parameter.equals(".")) {
-      result = new File(workingDir.getDirectory()).list();
-
+    // if targetDir is absolute, exists
+    if (targetDir.getPath().isAbsolute() && targetDir.exists()){
+      result = targetDir.toFile().list();
     }
-    else if (parameter.equals("..")){
-      result = new File(new File(workingDir.getDirectory()).getParent()).list();
+    // else add target with working
+    else if (workingDir.add(targetDir).exists()){
+      result = workingDir.add(targetDir).toFile().list();
     }
-    else if (!targetDir.getDirectory().equals("")){
-      result = new File(targetDir.getDirectory()).list();
-    }
-    else{ // error
+    // error
+    else{
       s.setStatus(0);
       return s;
     }
+    // print result
     for (int i=0;i<result.length;i++){
+      if(i%4 == 0 && i!=0){
+        System.out.println();
+      }
       System.out.print(" "+ result[i]);
     }
     System.out.println();

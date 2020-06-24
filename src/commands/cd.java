@@ -7,30 +7,19 @@ import others.Session;
 
 public class cd extends Command{
   public static Session changeDirectory(String parameter, Session s){
-    // validate and update dir
-    Directory oldDir;
-    Directory newDir;
-    oldDir = s.getWorkingDir();
-    newDir = new Directory(parameter);
-
-    if(parameter.equals(".")){
-      s.setStatus(1);
+    // need validate normalize parameter
+    Directory workingDir = s.getWorkingDir();
+    Directory targetDir = new Directory(parameter);
+    // absolute dir
+    if (targetDir.getPath().isAbsolute()){
+      s.updateWorkingDir(targetDir);
     }
-    else if(parameter.equals("..")){
-      // update workingDir to parent dir
-      File current = new File(s.getWorkingDir().getDirectory());
-      s.updateWorkingDir(new Directory(current.getParent()));
-      s.setStatus(1);
-    }
-
-
-    if(!newDir.getDirectory().equals("")) {
-      s.updateWorkingDir(newDir);
-      s.setStatus(1);
-    }
+    // none absolute, concatenate with workingDir
     else{
-      s.setStatus(0);
+      s.updateWorkingDir(workingDir.add(targetDir));
     }
+    s.setStatus(1);
+
     return s;
   }
 }

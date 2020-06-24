@@ -1,33 +1,44 @@
 package others;
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.*;
+
 
 public class Directory {
-  String dir;
-  File file;
+  Path path;
+  Path parent;
+  File dir; //file representation of this directory
 
   public Directory(String dir){
-    if(new File(dir).isDirectory()) {
-      this.dir = new File(dir).getAbsolutePath();
-    }
-    // invalid dir
-    else{
-      this.dir="";
-      System.out.println("failed to recognize directory:"+dir);
-    }
-    if(new File(dir).isFile()){
-      this.file = new File(dir);
-    }
+    this.path = Paths.get(dir).normalize();
+    this.parent = this.path.getParent();
+    this.dir = this.path.toFile();
   }
 
-  public String getDirectory(){
-    try {
-      return new File(dir).getCanonicalPath();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public Directory add(Directory dir){
+    // add target path to this.path
+    Path oldPath = this.getPath();
+    Path newPath = Paths.get(oldPath.toString(), dir.toString());
+    Directory result = new Directory(newPath.toString());
+    return result;
+  }
+
+  public Path getPath(){
+    return this.path;
+  }
+
+  public boolean exists(){
+    return this.dir.exists();
+  }
+
+  public File toFile(){
     return this.dir;
   }
+
+  @Override
+  public String toString() {
+    return this.dir.getPath();
+  }
+
   // Not sure if i should let dir class handle getting all of the subdirectories into a string
   // I might end up changing it so directory gives an array, and ls class turns it into string
   // - Meng He
